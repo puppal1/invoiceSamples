@@ -1,0 +1,132 @@
+
+<div class="invoiceClass">
+<form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" novalidate>
+
+  <!-- Hero Detail Controls -->
+  <table>
+  <tr>
+    <td>
+  <div class="form-group">
+    <label class="center-block">Invoice Name:
+      <input class="form-control" formControlName="invoiceName">
+    </label>
+  </div>
+    </td>
+    <td>
+  <div class="form-group">
+    <md-form-field>
+      <input mdInput [mdDatepicker]="picker" placeholder="Invoice Due Date:" class="form-control" formControlName="invoiceDueDate">
+      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+      <md-datepicker #picker></md-datepicker>
+    </md-form-field>
+    <!---->
+    <!--<label class="center-block">Invoice Due Date:-->
+      <!--<input class="form-control" formControlName="invoiceDueDate">-->
+    <!--</label>-->
+  </div>
+    </td>
+  </tr>
+  </table>
+  <table>
+    <tr>
+      <td>
+  <div class="form-group">
+    <label class="center-block">Customer Email:
+      <input class="form-control" formControlName="customerEmail">
+    </label>
+  </div>
+      </td>
+      <td>
+  <div class="form-group">
+    <label class="center-block">Invoice Billing Zip:
+      <input class="form-control" formControlName="invoiceZip">
+    </label>
+  </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+  <div class="form-group">
+    <label class="center-block">Invoice Billing Address:
+      <input class="form-control" formControlName="invoiceAddress">
+    </label>
+  </div>
+    </td><td>
+      <div class="form-group">
+        <label class="center-block">Invoice Notes:
+          <textarea class="form-control" formControlName="invoiceNotes" spellcheck="true"></textarea>
+        </label>
+      </div>
+    </td>
+    </tr>
+  </table>
+
+
+  <div class="form-group" *ngIf="false">
+    <label class="center-block">id:
+      <input class="form-control" formControlName="invoiceId">
+    </label>
+  </div>
+
+
+
+  <div formArrayName="invoiceItems" class="well well-lg">
+    <div *ngFor="let invoiceItem of invoiceItems.controls; let i=index" [formGroupName]="i" >
+      <!-- The repeated Invoice Item template -->
+      <table>
+      <h4 *ngIf="!displayInvoiceItemName(invoiceItems.at(i).get('invoiceItemName').value); else  elseBlock">InvoiceItem #{{i + 1}}</h4>
+        <tr>
+      <ng-template #elseBlock><h4>
+        {{invoiceItems.at(i).get('invoiceItemName').value}}
+      </h4> </ng-template>
+        </tr>
+        <tr>
+          <td>
+      <!--<div style="margin-left: 1em;">-->
+        <div class="form-group">
+          <label class="center-block">Invoice Item Name:
+            <input class="form-control" formControlName="invoiceItemName">
+          </label>
+        </div>
+          </td>
+          <td>
+        <div class="form-group">
+          <label class="center-block">Invoice Item Cost $:
+            <input   type="number"  class="form-control" formControlName="invoiceitemCost" >
+          </label>
+        </div>
+          </td>
+        <td>
+        <div class="form-group">
+          <label class="center-block">Invoice Item Description:
+            <input class="form-control" formControlName="invoiceItemDescription">
+          </label>
+        </div>
+        </td>
+        </tr>
+      <!--</div>-->
+      <br>
+      </table>
+<!-- End repeated Invoice-->
+    </div>
+    <button (click)="addInvoiceItem()" type="button" class="btn btn-success">Add a Invoice Item</button>
+  </div>
+  <br>
+  <div class="form-group">
+    <h6 class="center-block">Invoice Total Cost $:
+<span class="amount">
+      {{sumAmount()}}</span>
+    </h6>
+  </div>
+  <div style="margin-bottom: 1em">
+    <button type="submit"
+            [disabled]="invoiceForm.pristine" class="btn btn-danger">Save</button> &nbsp;
+
+  </div>
+
+</form>
+</div>
+<!--<p>invoiceForm value: {{ invoiceForm.value | json}}</p>-->
+
+<!--<h4>Name change log</h4>-->
+<!--<div *ngFor="let name of nameChangeLog">{{invoiceName}}</div>-->
